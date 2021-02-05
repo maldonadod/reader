@@ -1,34 +1,28 @@
 class Carousel {
   constructor() {
     this.slides = []
-    this.movements = []
+    this.activeIndex = 0
   }
   add(slide) {
     this.slides.push(slide)
+    this.activeIndex = this.slides.length - 1
   }
   center() {
-    const active = this.movements.reduce((acc, movement) => {
-      if (movement === "right") {
-        const afterCurrent = this.slides[acc + 1]
-        return afterCurrent
-          ? acc + 1
-          : acc
-      }
-      if (movement === "left") {
-        const beforeCurrent = this.slides[acc - 1]
-        return beforeCurrent
-          ? acc - 1
-          : acc
-      }
-    }, this.slides.length - 1)
-    return this.slides[active]
+    return this.slides[this.activeIndex]
   }
   move(keys) {
+    this.remainingOnLeft = 0
+    this.remainingOnRight = 0
     for (const key of keys) {
       if (key === "l") {
-        this.movements.push("left")
+        this.activeIndex = this.activeIndex - 1
+        if (this.activeIndex < 0) {
+          this.activeIndex = 0
+        }
+        this.remainingOnLeft = this.activeIndex
       } else {
-        this.movements.push("right")
+        this.activeIndex = this.activeIndex + 1
+        this.remainingOnRight = this.slides.length - (this.activeIndex + 1)
       }
     }
   }

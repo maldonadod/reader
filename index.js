@@ -1,5 +1,5 @@
 const Carousel = require("./Carousel");
-const { filter, tap, pluck } = require("rxjs/operators");
+const { filter, tap, pluck, map } = require("rxjs/operators");
 const slides = require("./slides");
 const keypresses = require("./keypresses");
 
@@ -11,13 +11,18 @@ slides().subscribe(
   () => display(createView(carousel))
 );
 
-keypresses()
+const moves = keypresses()
 .pipe(
   pluck("name"),
   filter(keyName => keyName === "r" || keyName === "l"),
   tap(keyName => carousel.move(keyName))
-).subscribe(() => {
+)
+
+moves
+.subscribe(() => {
   display(createView(carousel))
+  console.log("remaning moves to right: ", carousel.remainingOnRight)
+  console.log("remaning moves to left: ", carousel.remainingOnLeft)
 })
 
 function display(view) {
