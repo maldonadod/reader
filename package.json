@@ -8,13 +8,15 @@
   "license": "MIT",
   "scripts": {
     "tst": "mocha",
-    "up": "node index.js"
+    "up": "node index.js",
+    "dices": "node dices.js"
   },
   "devDependencies": {
     "chai": "^4.2.0",
     "mocha": "^8.2.1"
   },
   "dependencies": {
+    "inquirer": "^7.3.3",
     "rxjs": "^6.6.3"
   }
 }
