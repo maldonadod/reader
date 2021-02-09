@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jueguito</title>
+  <style>
+    /*
+  * Dice.css v1.0
+  * Code - MIT License - https://github.com/diafygi/dice-css
+  * Images - Public Domain - https://openclipart.org/detail/105931/sixsided-dice-faces-lio-01
+  */
+    .dice {
+      display: inline-block;
+      min-height: 1em;
+      padding-left: 1em;
+      background-size: 1em;
+      background-repeat: no-repeat;
+    }
+
+    .dice-1 {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg' version='1.1' viewBox='0 0 76.5 76.5' height='21.6' width='21.6'%3E%3Cg transform='translate(113.25%2C-494.1)'%3E%3Cg transform='matrix(0.5%2C0%2C0%2C0.5%2C-406.5%2C374.7)'%3E%3Crect x='588' y='240.4' width='150' height='150' ry='50' rx='50' style='fill%3A%23fff%3Bstroke-width%3A3%3Bstroke%3A%23000'%2F%3E%3Ccircle transform='translate(337.5%2C87.5)' cx='325' cy='227.4' r='12.5' style='fill%3A%23000%3Bstroke-width%3A3%3Bstroke%3A%23000'%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E ");
+    }
+
+    .dice-2 {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg' version='1.1' viewBox='0 0 76.5 76.5' height='21.6' width='21.6'%3E%3Cstyle%3E.s0%7Bfill%3A%23000%3Bstroke-width%3A3%3Bstroke%3A%23000%3B%7D%3C%2Fstyle%3E%3Cg transform='translate(109.9%2C-505.1)'%3E%3Cg transform='matrix(0.5%2C0%2C0%2C0.5%2C-415.6%2C485.6)'%3E%3Crect x='613' y='40.4' width='150' height='150' ry='50' rx='50' style='fill%3A%23fff%3Bstroke-width%3A3%3Bstroke%3A%23000'%2F%3E%3Ccircle transform='translate(326.5%2C-148.5)' cx='325' cy='227.4' r='12.5' class='s0'%2F%3E%3Ccircle transform='translate(398.5%2C-76.5)' cx='325' cy='227.4' r='12.5' class='s0'%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E ");
+    }
+
+    .dice-3 {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg' version='1.1' viewBox='0 0 76.5 76.5' height='21.6' width='21.6'%3E%3Cstyle%3E.s0%7Bfill%3A%23000%3Bstroke-width%3A3%3Bstroke%3A%23000%3B%7D%3C%2Fstyle%3E%3Cg transform='translate(84.9%2C-515.5)'%3E%3Cg transform='matrix(0.5%2C0%2C0%2C0.5%2C-290.6%2C514.9)'%3E%3Crect x='413' y='2.9' width='150' height='150' ry='50' rx='50' style='fill%3A%23fff%3Bstroke-width%3A3%3Bstroke%3A%23000'%2F%3E%3Ccircle transform='translate(126.5%2C-186)' cx='325' cy='227.4' r='12.5' class='s0'%2F%3E%3Ccircle transform='translate(198.5%2C-114)' cx='325' cy='227.4' r='12.5' class='s0'%2F%3E%3Ccircle transform='translate(162.5%2C-150)' cx='325' cy='227.4' r='12.5' class='s0'%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E ");
+    }
+
+    .dice-4 {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg' version='1.1' viewBox='0 0 76.5 76.5' height='21.6' width='21.6'%3E%3Cstyle%3E.s0%7Bfill%3A%23000%3Bstroke-width%3A3%3Bstroke%3A%23000%3B%7D%3C%2Fstyle%3E%3Cg transform='translate(90.7%2C-499.7)'%3E%3Cg transform='matrix(0.5%2C0%2C0%2C0.5%2C-302.7%2C367.8)'%3E%3Crect x='425.5' y='265.4' width='150' height='150' ry='50' rx='50' style='fill%3A%23fff%3Bstroke-width%3A3%3Bstroke%3A%23000'%2F%3E%3Ccircle transform='translate(139%2C76.5)' cx='325' cy='227.4' r='12.5' class='s0'%2F%3E%3Ccircle transform='translate(139%2C148.5)' cx='325' cy='227.4' r='12.5' class='s0'%2F%3E%3Ccircle transform='translate(211%2C76.5)' cx='325' cy='227.4' r='12.5' class='s0'%2F%3E%3Ccircle transform='translate(211%2C148.5)' cx='325' cy='227.4' r='12.5' class='s0'%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E ");
+    }
+
+    .dice-5 {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg' version='1.1' viewBox='0 0 76.5 76.5' height='21.6' width='21.6'%3E%3Cstyle%3E.s0%7Bfill%3A%23000%3Bstroke-width%3A3%3Bstroke%3A%23000%3B%7D%3C%2Fstyle%3E%3Cg transform='translate(89.2%2C-510.5)'%3E%3Cg transform='matrix(0.5%2C0%2C0%2C0.5%2C-194.9%2C372.3)'%3E%3Crect x='213' y='277.9' width='150' height='150' ry='50' rx='50' style='fill%3A%23fff%3Bstroke-width%3A3%3Bstroke%3A%23000'%2F%3E%3Ccircle transform='translate(-73.5%2C89)' cx='325' cy='227.4' r='12.5' class='s0'%2F%3E%3Ccircle transform='translate(-73.5%2C161)' cx='325' cy='227.4' r='12.5' class='s0'%2F%3E%3Ccircle transform='translate(-1.5%2C89)' cx='325' cy='227.4' r='12.5' class='s0'%2F%3E%3Ccircle transform='translate(-1.5%2C161)' cx='325' cy='227.4' r='12.5' class='s0'%2F%3E%3Ccircle transform='translate(-37.5%2C125)' cx='325' cy='227.4' r='12.5' class='s0'%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E ");
+    }
+
+    .dice-6 {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg' version='1.1' viewBox='0 0 76.5 76.5' height='21.6' width='21.6'%3E%3Cstyle%3E.s0%7Bfill%3A%23000%3Bstroke-width%3A3%3Bstroke%3A%23000%3B%7D%3C%2Fstyle%3E%3Cg transform='translate(86.2%2C-500.6)'%3E%3Cg transform='matrix(0.5%2C0%2C0%2C0.5%2C-98.2%2C356.2)'%3E%3Crect x='25.5' y='290.4' width='150' height='150' ry='50' rx='50' style='fill%3A%23fff%3Bstroke-width%3A3%3Bstroke%3A%23000'%2F%3E%3Ccircle transform='translate(-261%2C101.5)' cx='325' cy='227.4' r='12.5' class='s0'%2F%3E%3Ccircle transform='translate(-261%2C173.5)' cx='325' cy='227.4' r='12.5' class='s0'%2F%3E%3Ccircle transform='translate(-261%2C137.5)' cx='325' cy='227.4' r='12.5' class='s0'%2F%3E%3Ccircle transform='translate(-189%2C101.5)' cx='325' cy='227.4' r='12.5' class='s0'%2F%3E%3Ccircle transform='translate(-189%2C173.5)' cx='325' cy='227.4' r='12.5' class='s0'%2F%3E%3Ccircle transform='translate(-189%2C137.5)' cx='325' cy='227.4' r='12.5' class='s0'%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+    }
+
+    .dice {
+      font-size: 3em;
+    }
+
+    .juego {
+      display: flex;
+    }
+    .partida {
+      display: none;
+    }
+
+    #start {
+      background-color: #59405c;
+      padding: 10px;
+      color: white;
+      font-size: 22px;
+      border-radius: 6px;
+      border: 1px solid #87556f;
+    }
+    #play-again {
+      display: none;
+    }
+
+    body {
+      background-color: #4b5d67;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="juego">
+    <button id="start">Empezar</button>
+    <div class="partida">
+      <span>Ingresa tu nombre y tira los dados:</span>
+      <input autocomplete="off" type="text" name="name" id="name">
+      <br />
+      <br />
+      <button id="throw-dices">Tirar dado</button>
+      <br />
+      <div id="content"></div>
+      <button id="play-again">Jugar de nuevo</button>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/6.6.3/rxjs.umd.min.js"></script>
+  <script>
+    const startElement = document.querySelector("#start")
+    const playAgainElement = document.querySelector("#play-again")
+    const throwdices = document.querySelector("#throw-dices")
+    const input = document.querySelector("input")
+    const content = document.querySelector("#content")
+    const partidaElement = document.querySelector(".partida")
+    const clicks = rxjs.fromEvent(throwdices, "click")
+    const starts = rxjs.fromEvent(startElement, "click")
+    const restarts = rxjs.fromEvent(playAgainElement, "click")
+
+    function randomIntFromInterval(min, max) {
+      return Math.floor(Math.random() * (max - min + 1) + min);
+    }
+
+    class Dice {
+      constructor(player) {
+        this.value = randomIntFromInterval(1, 6)
+        this.player = player;
+      }
+      returnBigger(otherDice) {
+        return this.value > otherDice.value ? this : otherDice
+      }
+    }
+
+    const map = rxjs.operators.map;
+    const tap = rxjs.operators.tap;
+    const take = rxjs.operators.take;
+    const mergeMap = rxjs.operators.mergeMap;
+    const merge = rxjs.merge;
+
+    function prompt() {
+      return rxjs
+        .fromEvent(throwdices, "click")
+        .pipe(
+          map(() => input.value),
+          tap(() => input.value = ""),
+          take(1)
+        )
+    }
+    function display(dice) {
+      content.innerHTML = content.innerHTML
+        + "<br />"
+        + dice.player
+        + ": "
+        + '<span class="dice dice-' + dice.value + '"></span>'
+    }
+    function displayPlayAgain() {
+      playAgainElement.style.display = "block"
+    }
+    function displayWinner(dice) {
+      content.innerHTML = content.innerHTML
+        + "<br />"
+        + "Ganador: "
+        + dice.player
+    }
+
+    merge(starts, restarts)
+      .pipe(
+        tap(() => {
+          partidaElement.style.display = 'block'
+          startElement.style.display = 'none'
+          playAgainElement.style.display = 'none'
+        }),
+        mergeMap(() => {
+          return prompt()
+            .pipe(
+              map(player1 => new Dice(player1)),
+              tap(display),
+              mergeMap(playerOneDices => {
+                return prompt()
+                  .pipe(
+                    map(player2 => new Dice(player2)),
+                    tap(display),
+                    mergeMap(playerTwoDices => rxjs.of(playerOneDices.returnBigger(playerTwoDices))),
+                    tap(displayPlayAgain)
+                  )
+              })
+            )
+        })
+      )
+      .subscribe(displayWinner)
+  </script>
+</body>
+
+</html>
