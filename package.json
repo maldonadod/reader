@@ -8,9 +8,8 @@
   "license": "MIT",
   "scripts": {
     "tst": "mocha",
-    "up": "node index.js",
     "start": "node server.js",
-    "dices": "nodemon server.js"
+    "dev": "PORT=3000 nodemon server.js"
   },
   "devDependencies": {
     "chai": "^4.2.0",
