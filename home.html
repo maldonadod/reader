@@ -6,6 +6,56 @@
   <title>:: Match ::</title>
 </head>
 <body>
-  home
+  <div id="root">
+    <input type="text" name="name" id="name">
+    <button id="submit_name">Submit</button>
+  </div>
+  <div id="list_of_users"></div>
+  <script src="https://cdn.socket.io/3.1.1/socket.io.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/6.6.3/rxjs.umd.min.js"></script>
+  <script>
+    const socket = io();
+  </script>
+  <script>
+    function addChild(child, element) {
+      element.appendChild(child)
+    }
+    function userListItem(name) {
+      const p = document.createElement("p")
+      const a = document.createElement("a")
+      a.innerHTML = name
+      a.href = "/#"
+      a.addEventListener("click", (event) => {
+        socket.emit("fight", {
+          //coupling with dom element
+          player: document.querySelector("#name").value,
+          player2: event.target.innerHTML
+        })
+      })
+      addChild(a, p)
+      return p
+    }
+  </script>
+  <script>
+    const map = rxjs.operators.map;
+
+    const nameSubmits = rxjs
+      .fromEvent(document.querySelector("#submit_name"), "click")
+      .pipe(
+        map(() => document.querySelector("#name").value)
+      );
+
+    nameSubmits.subscribe(name => {
+      socket.emit("new_user", {
+        name
+      })
+    })
+
+    socket.on("list_of_users", ({ users }) => {
+      const listOfUsers = document.querySelector("#list_of_users")
+      listOfUsers.innerHTML = ""
+      users.forEach(name => addChild(userListItem(name), listOfUsers))
+    })
+  </script>
 </body>
 </html>
