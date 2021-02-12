@@ -1,16 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>:: Match ::</title>
+  <style>
+    #request_match_dialog {
+      display: none;
+    }
+    .match {
+      opacity: 0;
+      transition: all 1s;
+    }
+    .match.on {
+      opacity: 1;
+    }
+    #assistant {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    #welcome-player {
+      display: none;
+    }
+  </style>
 </head>
+
 <body>
-  <div id="root">
-    <input type="text" name="name" id="name">
-    <button id="submit_name">Submit</button>
+  <div id="assistant">
+    <div id="questionary">
+      <p>Cómo deberia llamarte ?</p>
+      <div>
+        <input type="text" name="name" id="name">
+        <button id="submit_name">Submit</button>
+      </div>
+    </div>
+
+    <div id="welcome-player"></div>
   </div>
   <div id="list_of_users"></div>
+  <div id="match" class="match">A Jugar!</div>
+  <div id="request_match_dialog"> 
+    <p>Quiere jugar ?</p>
+    <button id="request_match_dialog_confirm">Si</button>
+    <button>No</button>
+  </div>
   <script src="https://cdn.socket.io/3.1.1/socket.io.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/6.6.3/rxjs.umd.min.js"></script>
   <script>
@@ -20,13 +55,30 @@
     function addChild(child, element) {
       element.appendChild(child)
     }
+    function showConfirmDialog() {
+      document
+        .querySelector("#request_match_dialog")
+        .style
+        .display = "block"
+      document
+        .querySelector("#request_match_dialog_confirm")
+        .addEventListener("click", () => {
+          socket.emit("match_accepted")
+        })
+    }
+    function hideRequestMatchDialog() {
+      document
+        .querySelector("#request_match_dialog")
+        .style
+        .display = "none"
+    }
     function userListItem(name) {
       const p = document.createElement("p")
       const a = document.createElement("a")
       a.innerHTML = name
       a.href = "/#"
       a.addEventListener("click", (event) => {
-        socket.emit("fight", {
+        socket.emit("request_new_match", {
           //coupling with dom element
           player: document.querySelector("#name").value,
           player2: event.target.innerHTML
@@ -35,27 +87,53 @@
       addChild(a, p)
       return p
     }
-  </script>
+    function showMatch(match) {
+      hideRequestMatchDialog()
+      document
+        .querySelector("#match")
+        .className += " on"
+    }
+    function updateOpponentChart({ users }) {
+      const listOfUsers = document.querySelector("#list_of_users")
+      listOfUsers.innerHTML = "" 
+      users.forEach(name => addChild(userListItem(name), listOfUsers))
+    }
+    function welcomePlayer(name) {
+      document
+        .querySelector("#questionary")
+        .style
+        .display = "none"
+      document
+        .querySelector("#welcome-player")
+        .style
+        .display = "block"
+      document
+        .querySelector("#welcome-player")
+        .innerHTML = "Hola " + name
+    }
+</script>
   <script>
     const map = rxjs.operators.map;
+    const filter = rxjs.operators.filter;
+    const tap = rxjs.operators.tap;
 
-    const nameSubmits = rxjs
+    const names = rxjs
       .fromEvent(document.querySelector("#submit_name"), "click")
       .pipe(
-        map(() => document.querySelector("#name").value)
+        map(() => document.querySelector("#name").value),
+        filter(name => name !== ""),
       );
 
-    nameSubmits.subscribe(name => {
-      socket.emit("new_user", {
-        name
-      })
-    })
+    names
+      .subscribe(name => {
+        socket.emit("new_user", { name })
+        welcomePlayer(name)
+      });
 
-    socket.on("list_of_users", ({ users }) => {
-      const listOfUsers = document.querySelector("#list_of_users")
-      listOfUsers.innerHTML = ""
-      users.forEach(name => addChild(userListItem(name), listOfUsers))
-    })
+    socket.on("list_of_users", updateOpponentChart)
+    socket.on("request_match", showConfirmDialog);
+    socket.on("show_match", showMatch)
   </script>
 </body>
+
 </html>
