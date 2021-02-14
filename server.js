@@ -1,14 +1,45 @@
 const path = require("path");
+const multer = require("multer");
 const express = require("express");
 const app = express();
-const server = require('http').createServer(app);
-const io = require('socket.io')(server);
+const server = require("http").createServer(app);
+const io = require("socket.io")(server);
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "publications")
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname)
+  }
+})
+const upload = multer({ storage })
+const publications = []
+
+app.set("view engine", "ejs");
 
 app.get("/dados", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "home.html"));
+});
+app.get("/publicar", (req, res) => {
+  res.render("publish", {
+    publications: {
+      count: publications.length,
+      list: publications.map(p => p.filename)
+    }
+  });
+});
+app.get("/publicacion/:name", (req, res) => {
+  const name = req.params.name;
+  res.sendFile(path.join(__dirname, "publications/" + name));
+});
+app.post("/publicar", upload.single("publication"), (req, res) => {
+  publications.push({
+    filename: req.file.originalname
+  })
+  res.redirect("/publicar");
 });
 
 const users = new Map()

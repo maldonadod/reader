@@ -113,9 +113,29 @@
     }
 </script>
   <script>
+    const Observable = rxjs.Observable;
     const map = rxjs.operators.map;
+    const mergeMap = rxjs.operators.mergeMap;
     const filter = rxjs.operators.filter;
     const tap = rxjs.operators.tap;
+
+    const clicks = rxjs
+      .fromEvent(document, "click")
+      .pipe(
+        mergeMap(() => {
+          return new Observable(observer => {
+
+            observer.next("pending")
+
+            setTimeout(() => {
+              observer.next("fulfilled")
+            }, 3000)
+          })
+        }),
+        tap(console.log)
+      );
+    
+    clicks.subscribe(() => {})
 
     const names = rxjs
       .fromEvent(document.querySelector("#submit_name"), "click")

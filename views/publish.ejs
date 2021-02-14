@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Publicar</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <form action="/publicar" method="post" enctype="multipart/form-data">
+    <input type="file" name="publication" placeholder="Archivo" />
+    <input type="submit" value="Publicar" />
+  </form>
+
+  <ul>
+    <% publications.list.forEach(function(filename){ %>
+      <li><a href="/publicacion/<%= filename %>"><%= filename %></a></li>
+    <% }); %>
+  </ul>
+  <p>Cantidad de publicaciones: <%= publications.count %></p>
+</body>
+</html>
