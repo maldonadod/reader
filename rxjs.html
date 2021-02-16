@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RXJS - Flattening Operators</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+    #lists {
+      display: flex;
+      padding: 20px;
+      background-color: #9fb8ad;
+    }
+    .list {
+      margin-left: 20px;
+      list-style: none;
+      text-align: center;
+      background-color: #c5d7bd;
+      padding: 20px;
+    }
+    .list > li:first-child {
+      padding-bottom: 10px;
+      color: #383e56;
+    }
+    .list > li {
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  
+  <section id="lists">
+    <p>SwitchMap: Me suscribo a un observable y por cada valor emitido
+      switcheo la suscripción a un nuevo observable. El primero se denomina
+      "observable exterior" (outter) el otro "observable interior" (inner).
+      Cada vez que el exterior emita un valor y un nuevo observable interior
+      sea creado, el anterior observable interior es completado.
+    </p>
+  </section>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/6.6.3/rxjs.umd.min.js"></script>
+
+  <script>
+
+    const add = {
+      toListNamed(listName) {
+        return html => {
+          const li = document.createElement("li")
+          li.innerHTML = html
+          let list = document.getElementById(listName)
+          if (!list) {
+            list = document.createElement("ul")
+            list.id = listName
+            list.className = "list"
+            const h1 = document.createElement("h2")
+            h1.innerHTML = listName
+            const li = document.createElement("li")
+            li.appendChild(h1)
+            list.appendChild(li)
+            document
+              .getElementById("lists")
+              .appendChild(list)
+          }
+          list.appendChild(li)
+        }
+      },
+    }
+
+    const Observable = rxjs.Observable;
+    const mergeMap = rxjs.operators.mergeMap;
+    const concatMap = rxjs.operators.concatMap;
+    const tap = rxjs.operators.tap;
+    const switchMap = rxjs.operators.switchMap;
+    const map = rxjs.operators.map;
+    const mergeAll = rxjs.operators.mergeAll;
+    const concatAll = rxjs.operators.concatAll;
+    const endWith = rxjs.operators.endWith;
+
+    function numbersObservable(parent) {
+      parent = parent && parent.value ? parent.value : null
+      return new Observable(observer => {
+        observer.next({value: 1, parent})
+        observer.next({value: 2, parent})
+        setTimeout(() => {
+          observer.next({value: 3, parent})
+          observer.complete()
+        }, 1000)
+      })
+    }
+
+    const toLabel = ({value, parent}) => "(" + parent + ") > (" + value + ")"
+
+    numbersObservable()
+    .pipe(
+        concatMap(numbersObservable),
+        map(toLabel),
+      )
+      .subscribe(add.toListNamed("ConcatMap"))
+    numbersObservable()
+      .pipe(
+        mergeMap(numbersObservable),
+        map(toLabel),
+      )
+      .subscribe(add.toListNamed("MergeMap"))
+    numbersObservable()
+      .pipe(
+        switchMap(numbersObservable),
+        map(toLabel),
+      )
+      .subscribe(add.toListNamed("SwitchMap"))
+  </script>
+</body>
+</html>

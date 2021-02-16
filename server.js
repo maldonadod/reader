@@ -23,6 +23,9 @@ app.get("/dados", (req, res) => {
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "home.html"));
 });
+app.get("/rxjs", (req, res) => {
+  res.sendFile(path.join(__dirname, "rxjs.html"));
+});
 app.get("/publicar", (req, res) => {
   res.render("publish", {
     publications: {
