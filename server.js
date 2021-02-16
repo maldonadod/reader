@@ -4,6 +4,7 @@ const express = require("express");
 const app = express();
 const server = require("http").createServer(app);
 const io = require("socket.io")(server);
+const bodyParser = require('body-parser')
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "publications")
@@ -15,6 +16,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage })
 const publications = []
 
+app.use(bodyParser.urlencoded({ extended: false }))
 app.set("view engine", "ejs");
 
 app.get("/dados", (req, res) => {
@@ -25,6 +27,18 @@ app.get("/", (req, res) => {
 });
 app.get("/rxjs", (req, res) => {
   res.sendFile(path.join(__dirname, "rxjs.html"));
+});
+app.get("/phone", (req, res) => {
+  res.sendFile(path.join(__dirname, "phone.html"));
+});
+const messages = []
+app.post("/item", (req, res) => {
+  console.log(req.body)
+  const message = { message: req.body.message, datetime: new Date() }
+  messages.push(message)
+  setTimeout(() => {
+    res.send(message)
+  }, 2000)
 });
 app.get("/publicar", (req, res) => {
   res.render("publish", {

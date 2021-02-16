@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phone</title>
+</head>
+<body>
+  
+  <input type="text" id="input" />
+  <section id="feedback"></section>
+  <pre id="message"></pre>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/6.6.3/rxjs.umd.min.js"></script>
+
+  <script>
+    const Observable = rxjs.Observable;
+    const Subject = rxjs.Subject;
+    const fromEvent = rxjs.fromEvent;
+    const from = rxjs.from;
+    const mergeMap = rxjs.operators.mergeMap;
+    const concatMap = rxjs.operators.concatMap;
+    const tap = rxjs.operators.tap;
+    const switchMap = rxjs.operators.switchMap;
+    const map = rxjs.operators.map;
+    const mergeAll = rxjs.operators.mergeAll;
+    const concatAll = rxjs.operators.concatAll;
+    const debounceTime = rxjs.operators.debounceTime;
+    const startWith = rxjs.operators.startWith;
+    const endWith = rxjs.operators.endWith;
+    const filter = rxjs.operators.filter;
+    const take = rxjs.operators.take;
+    const pluck = rxjs.operators.pluck;
+    const of = rxjs.of;
+    const interval = rxjs.interval;
+    const combineLatest = rxjs.combineLatest;
+    const distinctUntilChanged = rxjs.operators.distinctUntilChanged;
+    const delay = rxjs.operators.delay;
+    const ajax = rxjs.ajax.ajax;
+
+    const inputs = fromEvent(document.getElementById("input"), "keyup")
+      .pipe(
+        debounceTime(500),
+        pluck("target", "value"),
+        map(value => value.trim()),
+        filter(input => input !== ""),
+        distinctUntilChanged(),
+      )
+
+    const feedbacks = new Subject()
+
+    inputs
+      .pipe(
+        switchMap(input => {
+          feedbacks.next("saving...")
+          return ajax({
+              url: "/item",
+              method: "POST",
+              body: {
+                message: input
+              }
+            })
+            .pipe(
+              map(res => res.response),
+              tap(() => feedbacks.next("saved"))
+            )
+        }),
+        tap(message => {
+          document
+            .getElementById("message")
+            .innerHTML = JSON.stringify(message, null, 2)
+        }),
+      )
+      .subscribe()
+    
+    feedbacks
+      .pipe(
+        tap(feedback => {
+          document
+            .getElementById("feedback")
+            .innerHTML = feedback
+        })
+      )
+      .subscribe()
+  </script>
+</body>
+</html>
